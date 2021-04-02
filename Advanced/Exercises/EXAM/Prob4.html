@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Online Shop</title>
+    <style>
+        .wrapper {
+            margin: auto;
+            width: 53%;
+            border: 3px solid rgb(26, 26, 26);
+            background-color: rgb(250, 250, 250);
+            padding: 10px;
+        }
+
+        #header {
+            font-family: "Trebuchet MS", Helvetica, sans-serif;
+            font-size: 300%;
+            font-weight: bold;
+            color: rgb(26, 26, 26);
+            text-align: center;
+            padding: 10px;
+        }
+
+        li {
+            list-style-type: none;
+        }
+
+        .block {
+            display: inline-block;
+            margin-left: 165px;
+        }
+
+        .field {
+            font-family: "Trebuchet MS", Helvetica, sans-serif;
+            font-size: 25px;
+            color: rgb(26, 26, 26);
+        }
+
+        .custom-select {
+            font-family: "Trebuchet MS", Helvetica, sans-serif;
+            font-size: 20px;
+            background-color: rgb(255, 255, 255);
+            color: rgb(26, 26, 26);
+            border: 1px solid rgb(26, 26, 26);
+            padding: 2px;
+            margin-top: 10px;
+            width: 200px;
+        }
+
+
+        .input1 {
+            width: 40px;
+            font-family: "Trebuchet MS", Helvetica, sans-serif;
+            font-size: 20px;
+            border: 1px solid rgb(26, 26, 26);
+            background-color: #ffffff;
+            color: rgb(26, 26, 26);
+            padding: 2px;
+        }
+
+        #capacity {
+            width: 40px;
+            font-size: 20px;
+            padding: 2px;
+            font-family: "Trebuchet MS", Helvetica, sans-serif;
+        }
+
+        #sum {
+            width: 80px;
+            font-size: 20px;
+            padding: 2px;
+            font-family: "Trebuchet MS", Helvetica, sans-serif;
+            margin: 10px 10px;
+        }
+
+        .fullCapacity {
+            width: 40px;
+            font-size: 20px;
+            padding: 2px;
+            font-family: "Trebuchet MS", Helvetica, sans-serif;
+            color: rgb(250, 0, 0);
+            border: 1px solid #f07777b2;
+            background-color: #f78989bb;
+        }
+
+        .display {
+            font-family: "Trebuchet MS", Helvetica, sans-serif;
+            font-size: 15px;
+            border: 1px solid rgb(26, 26, 26);
+            padding: 2px;
+            background-color: #ffffff;
+            color: rgb(26, 26, 26);
+            margin-top: 5px;
+            width: 100%;
+            height: 300px;
+        }
+
+        .text {
+            font-family: "Trebuchet MS", Helvetica, sans-serif;
+            font-size: 20px;
+            color: rgb(26, 26, 26);
+            margin-right: 10px;
+        }
+
+        .button:enabled {
+            font-family: "Trebuchet MS", Helvetica, sans-serif;
+            font-size: 20px;
+            cursor: pointer;
+            border: 1px solid rgb(26, 26, 26);
+            padding: 5px 15px;
+            margin: 3px;
+            border-radius: 8px;
+        }
+
+        .button:disabled {
+            background: rgb(248, 248, 248);
+            cursor: pointer;
+            color: rgb(216, 216, 216);
+            font-size: 20px;
+            padding: 5px 15px;
+            font-family: "Trebuchet MS", Helvetica, sans-serif;
+            margin: 3px;
+            border: 1px solid rgb(26, 26, 26);
+            border-radius: 8px;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+</head>
+
+<body>
+<div class="wrapper">
+</div>
+<script>
+    function onlineShop(selector) {
+        let form = `<div id="header">Online Shop Inventory</div>
+    <div class="block">
+        <label class="field">Product details:</label>
+        <br>
+        <input placeholder="Enter product" class="custom-select">
+        <input class="input1" id="price" type="number" min="1" max="999999" value="1"><label class="text">BGN</label>
+        <input class="input1" id="quantity" type="number" min="1" value="1"><label class="text">Qty.</label>
+        <button id="submit" class="button" disabled>Submit</button>
+        <br><br>
+        <label class="field">Inventory:</label>
+        <br>
+        <ul class="display">
+        </ul>
+        <br>
+        <label class="field">Capacity:</label><input id="capacity" readonly>
+        <label class="field">(maximum capacity is 150 items.)</label>
+        <br>
+        <label class="field">Price:</label><input id="sum" readonly>
+        <label class="field">BGN</label>
+    </div>`;
+        $(selector).html(form)
+        let totalItems = 0;
+        let totalPrice = 0;
+        if (totalItems < 150) {
+            $('.custom-select').on('input', function () {
+                $('#submit').prop('disabled', false)
+            });
+            $('#submit').on('click', function () {
+                let productName =  $('.custom-select').val();
+                let price = Number($('#price').val());
+                let quant = Number($('#quantity').val());
+                totalItems += quant;
+                totalPrice += price;
+                let string = `Product: ${productName} Price: ${price} Quantity: ${quant}`
+                let li = $(`<li>${string}</li>`)
+                $('.display').append(li);
+                $('#submit').prop('disabled', true)
+                $('.custom-select').val('');
+                $('#price').val(1);
+                $('#quantity').val(1);
+                $('#sum').val(totalPrice)
+                if  (totalItems < 150){
+                    $('#capacity').val(totalItems)
+                } else {
+                    $('#capacity').val('full').addClass('fullCapacity');
+                    $('.custom-select').prop('disabled',true).val('');
+                    $('#price').prop('disabled',true);
+                    $('#quantity').prop('disabled',true)
+                }
+            })
+        }
+    }
+
+</script>
+<script>onlineShop('.wrapper')</script>
+</body>
+

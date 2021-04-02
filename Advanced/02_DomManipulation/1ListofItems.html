@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>List of Items</h1>
+<ul id="items"><li>First</li><li>Second</li></ul>
+<input type="text" id="newItemText" />
+<input type="button" value="Add" onclick="addItem()">
+<script>
+    function addItem() {
+        //let list = document.createElement("ul");// create unorderedlist
+        //let liPeter = document.createElement("ul");// create list element
+        //liPeter.textContent = "Peter"; // element = "Peter"
+        //list.appendChild(liPeter); // закачи го
+
+        //let liMaria = document.createElement("li");
+        //liMaria.innerHTML = "<b>Maria</b>";
+        //liMaria.appendChild(liMaria)
+        //document.body.appendChild(list); // закачи го към бодито на HTML
+
+        let inputElement = document.getElementById("newItemText");    // get the value of the element
+        if (inputElement.value.trim() !== ""){
+            let li = document.createElement("li"); // create li with value
+            li.textContent = inputElement.value; // let li = input value
+            document.getElementById("items").appendChild(li);  // we get the table items and we .push(appendChild) to the table             // .parentNode.removeChild(li) remove
+            inputElement.value = ""; // we clear the input field '#' simbol for ID; '.' Simbol for Class
+        }
+    }
+</script>
+
+</body>
+</html>

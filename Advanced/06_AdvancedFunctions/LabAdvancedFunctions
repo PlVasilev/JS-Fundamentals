@@ -1,0 +1,83 @@
+function max(arr) { return arr; }
+console.log(max.length); // 1 (number of arguments)
+console.log(max.name); // max
+console.log((function(){}).name); // (empty string)
+
+function inner() {
+  console.log("Caller: " + inner.caller); // .caller - принтира този който ти вика функцията
+}
+function outer() { inner() };
+outer(); // Caller: function outer()
+
+Immediately-Invoked Function Expressions (IIFE) анонимна функция която се вика на момента изпълнява се и се трие от паметта
+Define anonymous function expression
+Invoke it immediately after declaration
+(function() { console.log("invoked!"); }());
+(function() { console.log("invoked!"); })();
+let iife = function() { console.log("invoked!"); }();
+
+this, call, apply, bind
+this сочи към това което го вика
+this в Arrow функция наслесява this от предходната функция (това което е било преди нея) защото Arrow f  няма собвствен this
+this в глобалния скоуп е this глобален обек
+this извикан от функция сочи към функцията
+this извикан от DOM елемент this сочи към DOM елемента
+The function context is the object that "owns" the currently executed code
+Function context == "this" object
+Depends on how the function is invoked
+Global invoke: func()
+object.function()
+domElement.event()
+Using call() / apply() / bind()
+
+function outer() {
+  console.log(this); // Object {name: "Peter"}
+  function inner() {
+    console.log(this); // Window  }
+  inner();}
+let obj = { name: 'Peter', f: outer }
+obj.f();
+
+The Function Context with Arrow Function
+function outer() {
+  let inner = () => console.log(this);
+  inner();}
+let obj = {
+  name: 'Peter',
+  f: outer };
+obj.f(); // Object {name: "Peter"}
+
+The Function Context for DOM Events
+<button onclick="alert(this)">Click Me</button>
+// Shows "[object HtmlButtonElement]" when clicked
+<button onclick="f(this)">Click Me</button>
+function f(btn) { alert(btn); };
+// Shows "[object HtmlButtonElement]" when clicked
+<button onclick="f()">Click Me</button>
+function f() { alert(this); };
+// Shows "[object Window]" when clicked
+
+Changing the Context: Call and Apply
+let maria = {
+  name: "Maria",
+  hello: function(thing) {
+    console.log(this.name + " says hello " + thing);  }}
+maria.hello("world"); // Maria says hello world
+let ivan = { name: 'Ivan' };
+maria.hello.call(ivan, "now"); // Ivan says hello now  // .call при викане на функция ({вземи this от това}, "аргумента")
+maria.hello.apply(ivan, ["again"]); // Ivan says hello again //
+.apply аргументите се подават като масив иначв като .call ({вземи this от това}, [аргументи като масив])
+
+Changing the Context: Bind
+let maria = {
+  name: "Maria",
+  hello: function(thing) {
+    console.log(this.name + " says hello " + thing);  }}
+let ivan = { name: 'Ivan' };
+let helloIvan = maria.hello.bind(ivan); // .bind променя за постоянно this на maria.hello функцията с this от иван функцията
+maria.hello("world"); // Maria says hello world
+helloIvan("from me"); // Ivan says hello from me
+
+
+arr = [a,b,c]
+...arr = 'a','b','c' три точки отпред разчленяват масива на променливи

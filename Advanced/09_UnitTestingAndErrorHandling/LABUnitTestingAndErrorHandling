@@ -1,0 +1,147 @@
+Error Handling – Concepts
+A function (method) should either do what its name suggests or indicate a problem.
+Any other behavior is incorrect.
+Normal execution  a function does what its name says
+Special case  return a special value to indicate "not found"
+
+Error Handling – Exceptions (Errors)
+Exception  a function is unable to do its work (fatal error)
+let arr = new Array(-1); // Uncaught RangeError
+let bigArr = new Array(9999999999); // RangeError
+let index = undefined.indexOf("hi"); // TypeError
+console.log(asfd); // Uncaught ReferenceError
+console.print('hi'); // Uncaught TypeError
+
+Error Handling – Special Values
+let sqrt = Math.sqrt(-1); // NaN (special value)
+let sub = "hello".substring(2, 1000); // llo // Soft error  substring still does its job: takes all available chars
+let sub = "hello".substring(-100, 100); // hello // Soft error  substring still does its job: takes all available chars
+let inv = new Date("Christmas"); // Invalid Date
+let dt = inv.getDate(); // NaN
+
+Unexpected (Not Obvious) Behavior
+let d = new Date(2016, 1, 20); // Feb 20 2016 (Jan = 0, Feb = 1)
+let dn = new Date(2016, 1, 30); // Mar 01 2016 (next month)
+let dp = new Date(2016, -1, 30); // Dec 30 2015 (prev month)
+let d1 = new Date(1, 1, 1); // Feb 01 1901
+let dMinus1 = new Date(-1, -1, -1); // Nov 29 -2
+let pi = new Date(3.14, 3.14, 3.14); // Month / year truncated // Apr 03 1903 03:21:36 (fractial day turned to hours / minutes)
+
+Exceptions vs. Special Values
+-Return a special value for expected behavior
+Return a value if no problem / a recoverable problem occurs
+Valid input arguments  return valid value or special value
+E.g. searching something  return the item found or undefined
+-Thrown an exception for unexpected behavior
+When unrecoverable problem occurs
+Invalid input arguments / invalid object state / missing resource
+E.g. create a card "-2 hearts" or create array of -5 elements
+
+Throwing Errors (Exceptions)
+throw new Error("Invalid state"); - General error
+throw new RangeError("Invalid index"); - Value out of range
+throw new TypeError("String expected"); - Expected a different type
+throw new ReferenceError("Missing age"); - Accessing non-existing object
+
+The try-catch block
+-Use try-catch block to catch errors (exceptions)
+--If an error occurs, the control is passed to the catch section
+---try {
+     // code that can throw an exception
+     // some other code  not executed in case of error!
+   } catch (ex) {
+     // this code is executed in case of exception
+     // ex holds the info about the exception
+   }
+
+try {
+  throw new RangeError("Invalid range.");
+  console.log("This will not be executed.");
+} catch (ex) {
+  console.log("---------------");
+  console.log("Exception object: " + ex);
+  console.log("Type: " + ex.name);
+  console.log("Message: " + ex.message);
+  console.log("Stack: " + ex.stack);
+  console.log("---------------");
+}
+
+Unit Testing – Definition - A unit test is a piece of code, written by a developer that checks whether a piece of functionality
+(e.g. function or method), is working as expected.
+Source code
+function sortNums(arr) { arr.sort((a,b) => a-b );}
+
+Test code (unit tests)
+let nums = [2, 15, -2, 4];
+sortNums(nums);
+if (JSON.stringify(nums) != "[-2,2,4,15]") console.error("test failed!");
+
+Unit Tests – Structure
+-The AAA Pattern: Arrange, Act, Assert
+--// Arrange all necessary preconditions and inputs
+  let nums = [2, 15, -2, 4];
+  // Act on the object or method under test
+  sortNums(nums);
+  // Assert that the obtained results are what we expect
+  if (JSON.stringify(nums) != "[-2,2,4,15]")
+    console.error("test failed!");
+
+Unit Test – Sum Numbers – Example
+function sum(arr) {
+  let sum = 0;
+  for (num of arr)
+    sum += Number(num);
+  return sum;
+}
+function testSum() {
+  if (sum([1, 2]) != 3) throw new Error("1+2 != 3");
+  if (sum([-2]) != -2) throw Error("-2 != -2");
+  if (sum([]) != 0) throw new Error("0 != 0");
+}
+
+****JSON.stringify маха празните места и запазва скобите
+
+Unit Testing Framework
+-Unit testing frameworks make writing unit tests simple
+Provides test cases, assertions, hooks, test runners, etc.
+JUnit, NUnit, Visual Studio Team Test (VSTT), PHPUnit
+JS unit testing: MOCHA, QUnit, Unit.js, Jasmine, …
+-Assertion frameworks (perform checks) - извършва провекри
+CHAI, Assert.js, Should.js
+-Mocking frameworks (mocks and stubs) - симулиране на заявка към базата и връща данни за потребител
+Sinon, JMock, Mockito, Moq
+
+Mocha and Chai
+Mocha is JS testing framework
+Runs in Node.js and in Web browsers
+Usually used together with Chai (assertion library)
+Пример
+let expect = require("chai").expect;  // използваме chai
+describe("sum(arr)", function() {     //
+  it("should return 3 for [1, 2]", function() {
+    expect(sum([1, 2])).to.be.equal(3);
+  });
+});
+
+Installing Mocha and Chai
+npm -g install mocha // -g install globally
+npm -g install chai
+
+Test Groups and Test Cases
+describe("Test group #1", function() {
+  it("should … when …", function() {
+    expect(actual).to.be.equal(expected);
+  });
+  it("should … when …", function() { … });
+});
+describe("Test group #2", function() {
+  it("should … when …", function() {
+    expect(actual).to.be.equal(expected); to.be.NaN // to.trow(Error)
+  });
+  …
+});
+
+
+
+
+

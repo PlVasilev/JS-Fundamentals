@@ -1,0 +1,129 @@
+Object composition == combining simple objects or data types into more complex ones
+let student = {
+  firstName: 'Maria',
+  lastName: 'Green',
+  age: 22,
+  location: { lat: 42.698, lng: 23.322 }
+}
+console.log(student); console.log(student.location.lat);
+
+Обхождат се с for IN цикъл
+
+let name = "Sofia";
+let population = 1325744;
+let country = "Bulgaria";
+let town = { name, population, country }; // автоматично налива ключа и стойността
+console.log(town); // Object {name: "Sofia", population: 1325744, country: "Bulgaria"}
+town.location = { lat: 42.698, lng: 23.322 }; // допълваме композицията
+console.log(town); // Object {…, location: Object}
+
+Combining Data with Functions
+let rect = {
+  width: 10,  height: 4,
+  grow: function(w, h) {
+    this.width += w; this.height += h;
+  },
+  print: function() {
+    console.log(`[${this.width} x ${this.height}]`);
+  }};
+rect.grow(2, 3); rect.print(); // [12 x 7]
+
+Printing Objects: toString() Function
+let rect = {
+  width: 10, height: 4,
+  toString: function() {
+    return `rect[${this.width} x ${this.height}]`;
+  }};
+console.log(rect); // Object {width: 10, height: 4}
+// This will invoke toString() to convert the object to String
+console.log('' + rect); // rect[12 x 7]
+
+What is Closure?
+Closure == state maintained (closed) inside a function
+Hidden from the outside world
+Example: counter with closures
+function counterClosure() {
+  let counter = 0;
+  function getNextCount() {
+    console.log(++counter);
+  };
+  return getNextCount;
+}
+let count = counterClosure();
+count(); // 1
+count(); // 2
+
+Closures – Shorter Syntax with IIFE
+let counter = (() => {
+  let num = 0;
+  return () =>
+    console.log(++num);
+})();
+counter(); // 1
+counter(); // 2
+
+"Module" Pattern (with Object Literal)
+let moduleObj = {
+  count: 0, // public
+  increase: function(num) { return this.count += num },
+  decrease: function(num) { return this.count -= num },
+  value: function() { return this.count }
+};
+moduleObj.count = 2; // the counter is accessible
+console.log(moduleObj.value()); // 2
+console.log(moduleObj.increase(5)); // 7
+console.log(moduleObj.decrease(1)); // 6
+
+"Module" Pattern (with Closure)
+let module = (function() {
+  let count = 0; // private
+  return {
+    increase: (num) => count += num,
+    decrease: (num) => count -= num,
+    value: () => count,
+  };
+})();
+console.log(module.value()); // 0
+console.log(module.increase(5)); // 5
+console.log(module.decrease(2)); // 3
+console.log(module.count); // undefined (not accessible)
+
+"Revealing Module" Pattern (with Closure) - НАЙ ИЗПОЛЗВАН
+let revModule = (function() {
+  let count = 0; // private
+  function change(amount) { return count += amount; }
+  function increase(num) { return change(num); }
+  function decrease(num) { return change(-num); }
+  function value() { return count; }
+  return { increase, decrease, value };
+})();
+console.log(revModule.value()); // 0
+console.log(revModule.increase(5)); // 5
+console.log(revModule.decrease(2)); // 3
+console.log(module.count); // undefined (not accessible)
+
+Object Inheritance!!
+let fatherCar = { brand: 'BMW', model: 'X5', color: 'blue',
+  toString: function() { return `[brand: ${this.brand}, model: ${this.model}, color: ${this.color}]`; }};
+  console.log('' + fatherCar);
+let myCar = Object.create(fatherCar); Object.create(fatherCar) създай обект като наследи пропартитата и логиката на fatherCar
+myCar.model = 'M4'; myCar.color = 'red';                       сам по себе си обекта myCar е празен, myCar.model - отива в myCar
+console.log('' + myCar);                                       вижда че май кар е празен и отива в парента fatherCar и взима модела
+                                                               от него
+Object Inheritance in JS (2)
+let workCar =
+  Object.create(fatherCar);
+workCar.model = 'i3';
+workCar.type = 'electric';
+workCar.toString = function() {
+  return `[brand: ${this.brand}, model: ${this.model}, color: ${this.color}, type: ${this.type}]`;}
+console.log('' + workCar);
+
+Prototype Chain
+Objects have prototype (a parent object)
+Prototypes form a prototype chain
+  Object.getPrototypeOf(fatherCar);
+  // Object {}
+  Object.getPrototypeOf(myCar);
+  // Object {brand: "BMW", model: "X5", color: "blue"}
+If a property is not found in the object itself, it is searched in the parent objects (in the prototype chain)

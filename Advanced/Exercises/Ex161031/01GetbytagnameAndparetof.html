@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+</head>
+<body>
+<div class="holder">
+    <input type="button" id="generate" value="Generate Summary"/>
+    <div id="content">
+        <p><strong>Important text. </strong>Not too important. <strong>Also useful info.</strong></p>
+    </div>
+</div>
+    <script>
+        function solve(button) {
+            $(button).click(summarize);
+            function summarize() {
+                let strong = $('#content').find('strong').text(); // get text of elements by tag name .find('tagname').text()
+            ($('#content')).append(`<div id="summary"><h2><p>${strong}</p></h2></div>`) // $('#content').parent = ($('#content'))
+            }
+        }
+        solve('#generate'); // adding a function to html so it can start
+    </script>
+</body>
+</html>
