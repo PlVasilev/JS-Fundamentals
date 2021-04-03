@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.10/handlebars.min.js"></script>
+</head>
+<body>
+    <script>
+
+        (async function () {
+            let arr = [
+                {name:"Shoos",price:105.99, description:"Big Shoes"},
+                {name:"Sandals",price:45.99, description:"Small Shoes"}
+            ]
+           let template = await $.get('./template.html');
+            console.log(template);
+            for (const product of arr) {
+               let productElement = template
+                   .replace(/{{name}}/, product.name)
+                   .replace(/{{price}}/,product.price)
+                   .replace(/{{description}}/,product.description);
+                $('body').append(productElement)
+            }
+        }())
+    </script>
+</body>
+</html>

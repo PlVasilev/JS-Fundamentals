@@ -1,0 +1,14 @@
+{{#each data}}
+    <tr id="{{_id}}">
+        <td>{{title}}</td>
+        <td>{{creatorUN}}</td>
+        <td>{{description}}</td>
+        <td>{{price}}</td>
+        <td>{{datePublished}}</td>
+        <td>
+            <a href="#" onclick="readMoreAd('{{title}}, {{description}}, {{datePublished}}, {{price}}, {{creatorId}}, {{creatorUN}}, {{imageUrl}}, {{viewCounter}}, {{_id}}')">[Read More]</a>
+            <a href="#" onclick="EditAd('{{title}}, {{description}}, {{datePublished}}, {{price}}, {{creatorId}}, {{creatorUN}}, {{imageUrl}}, {{viewCounter}}, {{_id}}')">[Edit]</a>
+            <a href="#" onclick="deleteAd('{{_id}}, {{creatorId}}')">[Delete]</a>
+        </td>
+    </tr>
+{{/each}}

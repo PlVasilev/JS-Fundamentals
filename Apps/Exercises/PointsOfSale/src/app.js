@@ -1,0 +1,7 @@
+$(() =>{
+    hideAllContainers();
+    welcomeSection();
+    attachBoxesEvents();
+    submitEvents()
+
+})
